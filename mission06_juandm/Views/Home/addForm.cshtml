@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Add a Movie";
+}
+
+@model mission06_juandm.Models.ApplicationResponse
+
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Fill out the following form to add a movie to Joel's movie list :)</p>
+<div>
+    <form method="post">
+        <label asp-for="Category">Category:</label>
+        <input asp-for="Category" /> <br /><br />
+
+        <label asp-for="Title">Title:</label>
+        <input asp-for="Title" /><br /><br />
+
+        <label asp-for="Year">Year:</label>
+        <input asp-for="Year" /><br /><br />
+
+        <label asp-for="Director">Director:</label>
+        <input asp-for="Director" /><br /><br />
+
+        <label asp-for="Rating">Rating:</label>
+        <select asp-for="Rating">
+            <option value="G">G</option>
+            <option value="PG">PG</option>
+            <option value="PG-13">PG-13</option>
+            <option value="R">R</option>
+        </select><br /><br />
+
+
+        <label asp-for="Edited">Edited:</label>
+        <select asp-for="Edited">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select><br /><br />
+        <button type="submit">Submit Entry!</button>
+
+
+    </form>
+</div>

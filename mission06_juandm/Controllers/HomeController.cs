@@ -1,26 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using mission06_juandm.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace mission06_juandm.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+       
         // making new constructor to help connect to db
-        private MovieInfoContext _starterContext { get; set; }
+        private MovieInfoContext daContext { get; set; }
 
 
         //constructor and adding to it so it can save to db 
-        public HomeController(ILogger<HomeController> logger, MovieInfoContext tempName)
+        public HomeController( MovieInfoContext tempName)
         {
-            _logger = logger;
-            _starterContext = tempName;
+            daContext = tempName;
         }
 
         public IActionResult Index()
@@ -30,26 +26,77 @@ namespace mission06_juandm.Controllers
         [HttpGet]
         public IActionResult addForm()
         {
+            ViewBag.Categories = daContext.Categories.ToList();
             return View();
         }
         [HttpPost]
         public IActionResult addForm(ApplicationResponse ar)
         {
             //adding the object and saving changes through context file!!!
-            _starterContext.Add(ar);
-            _starterContext.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                daContext.Add(ar);
+                daContext.SaveChanges();
 
-            return View("Confirmation", ar);
+               return View("Confirmation", ar);
+
+            }
+            //if form is not valid do this...
+            else
+            {
+                ViewBag.Categories = daContext.Categories.ToList();
+                return View(ar);
+            }
+            
         }
         // podcast page
         public IActionResult Podcast()
         {
             return View();
         }
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        
+        public IActionResult ReadTable()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var applications = daContext.Responses
+                .Include(x =>x.Category)
+                .OrderBy(x => x.Year)
+                .ToList();
+
+            return View(applications);
+        }
+        [HttpGet]
+        public IActionResult Edit(int movieid)
+        {
+            ViewBag.Categories = daContext.Categories.ToList();
+
+            // grabbing a specific movie in this case, by movieid
+            var movie = daContext.Responses.Single(x => x.MovieID == movieid);
+
+            return View("addForm", movie);
+        }
+        [HttpPost]
+        public IActionResult Edit (ApplicationResponse ar1)
+        {
+
+            daContext.Update(ar1);
+            daContext.SaveChanges();
+
+            return RedirectToAction("ReadTable");
+        }
+        [HttpGet]
+        public IActionResult Delete(int movieid)
+        {
+            var movie = daContext.Responses.Single(x => x.MovieID == movieid);
+
+            return View(movie);
+        }
+        [HttpPost]
+        public IActionResult Delete(ApplicationResponse ar)
+        {
+            
+            daContext.Responses.Remove(ar);
+            daContext.SaveChanges();
+            return RedirectToAction("ReadTable");
         }
     }
 }

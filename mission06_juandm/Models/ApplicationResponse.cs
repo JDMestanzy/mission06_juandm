@@ -20,14 +20,20 @@ namespace mission06_juandm.Models
         [Key]
         [Required]
         public int MovieID { get; set; }
-        public string Category { get; set; }
+        [Required(ErrorMessage ="Please enter the Title for the movie")]
         public string Title { get; set; }
+        [Required(ErrorMessage = "Please enter the year the movie was released")]
         public int Year { get; set; }
+        [Required(ErrorMessage = "Please enter the director for the movie")]
         public string Director { get; set; }
         
         public Ratings Rating { get; set; }
         public bool Edited { get; set; }
 
+        //build foreign key relationship!!
+        [Required(ErrorMessage = "Please enter the Movie Category ")]
+        public int CategoryID { get; set; }
+        public Category Category { get; set; }
 
     }
 }

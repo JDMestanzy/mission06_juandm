@@ -21,8 +21,8 @@ namespace mission06_juandm.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .HasColumnType("TEXT");
@@ -41,13 +41,15 @@ namespace mission06_juandm.Migrations
 
                     b.HasKey("MovieID");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             MovieID = 1,
-                            Category = "Science Fiction",
+                            CategoryID = 1,
                             Director = "James Cameron",
                             Edited = false,
                             Rating = 2,
@@ -57,7 +59,7 @@ namespace mission06_juandm.Migrations
                         new
                         {
                             MovieID = 2,
-                            Category = "Drama",
+                            CategoryID = 2,
                             Director = "Ryan Little",
                             Edited = false,
                             Rating = 2,
@@ -67,13 +69,58 @@ namespace mission06_juandm.Migrations
                         new
                         {
                             MovieID = 3,
-                            Category = "Sport/Drama",
+                            CategoryID = 3,
                             Director = "Ryan Coogler",
                             Edited = false,
                             Rating = 2,
                             Title = "Creed",
                             Year = 2015
                         });
+                });
+
+            modelBuilder.Entity("mission06_juandm.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Science Fiction"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Sports Drama"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "Action"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Other"
+                        });
+                });
+
+            modelBuilder.Entity("mission06_juandm.Models.ApplicationResponse", b =>
+                {
+                    b.HasOne("mission06_juandm.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

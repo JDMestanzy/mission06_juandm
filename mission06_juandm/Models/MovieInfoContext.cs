@@ -17,15 +17,23 @@ namespace mission06_juandm.Models
 
         //set of data of type app response it will be a list of stuff in the db 
         public DbSet<ApplicationResponse> Responses { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            mb.Entity<Category>().HasData(
+                new Category {CategoryID=1, CategoryName = "Science Fiction"},
+                new Category {CategoryID=2, CategoryName = "Sports Drama"},
+                new Category {CategoryID=3, CategoryName = "Action"},
+                new Category {CategoryID=4, CategoryName = "Other"}
+
+                );
             mb.Entity<ApplicationResponse>().HasData(
                 // seeding data with 3 movies, i used ratings.pg13 because it is the element of my ratings enum from the dropdown menu
                 new ApplicationResponse
                 {
                     MovieID = 1,
-                    Category = "Science Fiction",
+                    CategoryID = 1,
                     Title = "Avatar",
                     Year = 2009,
                     Director = "James Cameron",
@@ -35,7 +43,7 @@ namespace mission06_juandm.Models
                 new ApplicationResponse
                 {
                     MovieID = 2,
-                    Category = "Drama",
+                    CategoryID = 2,
                     Title = "Forever Strong",
                     Year = 2008,
                     Director = "Ryan Little",
@@ -45,7 +53,7 @@ namespace mission06_juandm.Models
                 new ApplicationResponse
                 {
                     MovieID = 3,
-                    Category = "Sport/Drama",
+                    CategoryID = 3,
                     Title = "Creed",
                     Year = 2015,
                     Director = "Ryan Coogler",

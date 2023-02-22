@@ -5,11 +5,16 @@
 <div class="text-center">
     <h1 class="display-4">The Joel Hilton Film Collection</h1>
     <br /><br />
-    <p>
-        This is Joel Hilton, he has curated a list of special films and would like to share it with you! <br />He has also worked on a podcast which you can also listen to here!
-        <br /> add a movie <a asp-controller="Home" asp-action="addForm"> here</a> 
-        <br /> For the podcast click <a asp-controller="Home" asp-action="Podcast">here!</a>
-    </p>
+          <p>
+              This is Joel Hilton, he has curated a list of special films and would like to share it with you!
+              <br />He has also worked on a podcast which you can also listen to <a asp-controller="Home" asp-action="Podcast">here!</a>
+              <br /> If you would like to add a movie click<a asp-controller="Home" asp-action="addForm"> here!</a>
+
+              <br /> To see the list of movies that have been added so far click <a asp-controller="Home" asp-action="ReadTable">here!</a>
+          </p>
     <br /><br />
     <img src="~/img/JoelHiltonHeadshot.jpg" style="width: 450px; height: auto; display: block; margin: 0 auto;" />
+</div>
+<div>
+
 </div>
